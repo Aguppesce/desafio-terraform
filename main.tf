@@ -43,7 +43,7 @@ module "efs" {
   environment = var.environment
   name        = "${var.project_name}-${var.environment}"
 
-  private_subnet_ids   = module.network.private_subnet_ids
+  private_subnet_ids    = module.network.private_subnet_ids
   efs_security_group_id = module.security.sg_efs_id
 
   tags = local.common_tags
@@ -55,24 +55,24 @@ module "target_group" {
   source = "./modules/tg"
 
   vpc_id = module.network.vpc_id
-  
-  name                = var.target_group_name
+
+  name              = var.target_group_name
   health_check_path = var.tg_health_check_path
 }
 
 # 6) Application Load Balancer (ALB)
 module "application_load_balancer" {
-  source = "./modules/alb" 
+  source = "./modules/alb"
 
-  alb_name           = var.alb_name
-  alb_owner          = "Magali"
+  alb_name  = var.alb_name
+  alb_owner = "Magali"
 
   vpc_id             = module.network.vpc_id
   public_subnet_ids  = module.network.public_subnet_ids
-  security_group_ids = [module.security.sg_alb_id] 
-  
+  security_group_ids = [module.security.sg_alb_id]
+
   target_group_arn    = module.target_group.target_group_arn
-  acm_certificate_arn = var.acm_certificate_arn 
+  acm_certificate_arn = var.acm_certificate_arn
 }
 
 # 7) Parámetros de la base de datos en SSM

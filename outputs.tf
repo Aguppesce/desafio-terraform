@@ -26,12 +26,12 @@ output "security_group_ids" {
 
 output "efs_id" {
   description = "ID del file system EFS."
-  value       = module.efs.efs_id
+  value       = module.efs.file_system_id
 }
 
 output "efs_mount_targets_ids" {
-  description = "IDs de los mount targets de EFS."
-  value       = module.efs.efs_mount_targets_ids
+  description = "IDs del Access Point."
+  value       = module.efs.access_point_id
 }
 
 output "ssm_db_parameters_arn" {
@@ -42,4 +42,14 @@ output "ssm_db_parameters_arn" {
 output "ssm_db_parameters_name" {
   description = "Nombres de parámetros SSM de DB."
   value       = module.ssm.db_parameters_name
+}
+
+output "iam_roles_arn" {
+  description = "ARNs de roles IAM."
+  value = {
+    ecs_instance_role       = module.iam.ecs_instance_role_arn
+    ecs_task_execution_role = module.iam.ecs_task_execution_role_arn
+    codebuild_role          = module.iam.codebuild_role_arn
+    codepipeline_role       = module.iam.codepipeline_role_arn
+  }
 }
