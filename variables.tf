@@ -41,7 +41,7 @@ variable "db_user" {
   }
 }
 
-variable "db_password" {
+variable "db_pass" {
   description = "Password del usuario de la base de datos."
   type        = string
   sensitive   = true
@@ -81,3 +81,4 @@ variable "frontend_image_tag" {
   type        = string
   default     = "latest"
 }
+

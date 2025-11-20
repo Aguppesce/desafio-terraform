@@ -6,13 +6,11 @@ locals {
   }
 }
 
-# AMI ECS Optimizada recomendada (Amazon Linux 2) vía SSM
 data "aws_ssm_parameter" "ecs_ami" {
   name = "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended/image_id"
 }
 
 locals {
-  # ID de la AMI que usamos en el Launch Template del cluster ECS
   ecs_ami_id = data.aws_ssm_parameter.ecs_ami.value
 }
 
@@ -28,6 +26,7 @@ module "network" {
 
   tags = local.common_tags
 }
+
 
 # 2) Security Groups
 module "security" {
@@ -96,7 +95,7 @@ module "ssm" {
   db_host     = var.db_host
   db_name     = var.db_name
   db_user     = var.db_user
-  db_password = var.db_password
+  db_pass     = var.db_pass
 
   tags = local.common_tags
 }
@@ -158,24 +157,31 @@ module "ecs_service_frontend" {
 
   ecs_task_execution_role_arn = module.iam.ecs_task_execution_role_arn
 
-  db_host = var.db_host
+  db_host_arn = module.ssm.db_parameters_arn.host
+  db_name_arn = module.ssm.db_parameters_arn.name
+  db_user_arn = module.ssm.db_parameters_arn.user
+  db_pass_arn = module.ssm.db_parameters_arn.password
 }
 
-# 12) ECS Service - MySQL
-module "ecs_service_mysql" {
-  source = "./modules/ecs-service-mysql"
+# 12) Service Discovery (Cloud Map)
+module "service_discovery" {
+  source = "./modules/service-discovery"
+  vpc_id = module.network.vpc_id
+}
 
+# 13) ECS Service - MySQL
+module "ecs_service_mysql" {
+  source       = "./modules/ecs-service-mysql"
   name         = "${var.project_name}-${var.environment}"
   cluster_name = module.ecs_cluster.cluster_name
 
   private_subnets = module.network.private_subnet_ids
   sg_db_id        = module.security.sg_db_id
-
-  efs_id = module.efs.file_system_id
+  efs_id          = module.efs.file_system_id
 
   ecs_task_execution_role_arn = module.iam.ecs_task_execution_role_arn
 
-  mysql_image = module.ecr.mysql_repository_url
-  db_password = var.db_password
-  db_name     = var.db_name
+  mysql_image         = module.ecr.mysql_repository_url
+  service_registry_arn = module.service_discovery.mysql_service_arn
 }
+

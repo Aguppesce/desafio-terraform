@@ -1,3 +1,4 @@
+# modules/ecs-service-mysql/main.tf
 resource "aws_ecs_task_definition" "mysql_task" {
   family                   = "${var.name}-mysql-task"
   network_mode             = "awsvpc"
@@ -8,9 +9,9 @@ resource "aws_ecs_task_definition" "mysql_task" {
     name = "mysql-data"
 
     efs_volume_configuration {
-      file_system_id = var.efs_id
-      transit_encryption = "ENABLED"
-      root_directory = "/"
+      file_system_id       = var.efs_id
+      transit_encryption   = "ENABLED"
+      root_directory       = "/"
     }
   }
 
@@ -27,9 +28,10 @@ resource "aws_ecs_task_definition" "mysql_task" {
         }
       ]
 
+      # 👇 EXACTAMENTE lo que tenías en la task que funcionaba
       environment = [
-        { name = "MYSQL_ROOT_PASSWORD", value = var.db_password },
-        { name = "MYSQL_DATABASE", value = var.db_name }
+        { name = "MYSQL_DATABASE",      value = "app_db"    },
+        { name = "MYSQL_ROOT_PASSWORD", value = "password" }
       ]
 
       mountPoints = [
@@ -54,5 +56,9 @@ resource "aws_ecs_service" "mysql_service" {
   network_configuration {
     subnets         = var.private_subnets
     security_groups = [var.sg_db_id]
+  }
+
+  service_registries {
+    registry_arn = var.service_registry_arn
   }
 }

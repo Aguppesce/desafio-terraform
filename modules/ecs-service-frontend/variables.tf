@@ -14,4 +14,9 @@ variable "image_tag" {}
 
 variable "ecs_task_execution_role_arn" {}
 
-variable "db_host" {}
+variable "db_host_arn" {}
+variable "db_name_arn" {}
+variable "db_user_arn" {}
+variable "db_pass_arn" {
+  sensitive = true
+}
