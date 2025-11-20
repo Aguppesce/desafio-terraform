@@ -11,5 +11,11 @@ variable "efs_id" {}
 variable "ecs_task_execution_role_arn" {}
 
 variable "mysql_image" {}
-variable "db_password" {}
 variable "db_name" {}
+variable "db_user" {}
+variable "db_password" {}
+
+variable "service_registry_arn" {
+  type        = string
+  description = "ARN del servicio de Cloud Map para MySQL"
+}

@@ -29,7 +29,9 @@ resource "aws_ecs_task_definition" "mysql_task" {
 
       environment = [
         { name = "MYSQL_ROOT_PASSWORD", value = var.db_password },
-        { name = "MYSQL_DATABASE", value = var.db_name }
+        { name = "MYSQL_DATABASE", value = var.db_name },
+        { name = "MYSQL_USER",          value = var.db_user },
+        { name = "MYSQL_PASSWORD",      value = var.db_password }
       ]
 
       mountPoints = [
@@ -54,5 +56,10 @@ resource "aws_ecs_service" "mysql_service" {
   network_configuration {
     subnets         = var.private_subnets
     security_groups = [var.sg_db_id]
+  }
+
+  # >>> Cloud Map <<<
+  service_registries {
+    registry_arn = var.service_registry_arn
   }
 }
