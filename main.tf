@@ -181,7 +181,7 @@ module "ecs_service_mysql" {
 
   ecs_task_execution_role_arn = module.iam.ecs_task_execution_role_arn
 
-  mysql_image = module.ecr.mysql_repository_url
-
+  mysql_image         = module.ecr.mysql_repository_url
   service_registry_arn = module.service_discovery.mysql_service_arn
 }
+

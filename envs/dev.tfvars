@@ -3,8 +3,8 @@ environment  = "dev"
 aws_region   = "us-east-1"
 
 db_host = "mysql.lab3.local"
-db_name = "lab3db"
-db_user = "lab3user"
+db_name = "app_db"
+db_user = "root"
 
 target_group_name     = "lab3-target-group"
 tg_health_check_path  = "/"
