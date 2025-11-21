@@ -28,17 +28,13 @@ Incluye configuración de **Health Check** para monitorear la salud de los targe
 ## 🔧 Ejemplo de uso
 
 ```hcl
-module "app_tg" {
-  source             = "./modules/target_group"
-  name               = "my-app-tg"
-  vpc_id             = module.vpc.vpc_id
-  port               = 80
-  protocol           = "HTTP"
-  health_check_path  = "/health"
-}
+module "target_group" {
+  source = "./modules/tg"
 
-output "tg_arn" {
-  value = module.app_tg.target_group_arn
+  vpc_id = module.network.vpc_id
+
+  name              = "tg-lab3"
+  health_check_path = "/"
 }
 ```
 
@@ -48,6 +44,5 @@ output "tg_arn" {
 
 * El Target Group está configurado con **target_type = "ip"**, adecuado para ECS o instancias con IP dinámica.
 * El **Health Check** revisa el path definido (`health_check_path`) en el puerto de tráfico (`traffic-port`) usando HTTP.
-* Se pueden ajustar los parámetros de Health Check: `timeout`, `interval`, `healthy_threshold` y `unhealthy_threshold`.
 * Se asigna un tag `Name` con el valor de la variable `name` para fácil identificación.
 * Compatible tanto con ALB como con NLB que soporten targets tipo IP.

@@ -74,9 +74,7 @@ module "iam" {
   prefix = "lab3"
 }
 
-output "ecs_instance_profile" {
-  value = module.iam.ecs_instance_profile_arn
-}
+```
 
 🔒 Seguridad
 

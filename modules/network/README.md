@@ -147,23 +147,18 @@ Permite que CodePipeline interactúe con:
 ### Ejemplo en un `main.tf`
 
 ```hcl
-module "vpc" {
-  source = "./modules/vpc"
+module "network" {
+  source = "./modules/network"
 
   name                 = "lab3"
   vpc_cidr             = "10.0.0.0/16"
   azs                  = ["us-east-1a", "us-east-1b"]
-  public_subnet_cidrs  = ["10.0.1.0/24", "10.0.2.0/24"]
-  private_subnet_cidrs = ["10.0.11.0/24", "10.0.12.0/24"]
+  public_subnet_cidrs  = ["10.0.0.0/24", "10.0.16.0/24"]
+  private_subnet_cidrs = ["10.0.128.0/24", "10.0.144.0/24"]
 
-  tags = {
+  tags = = {
     Project = "Lab3"
   }
-}
-
-module "iam" {
-  source = "./modules/iam"
-  prefix = "lab3"
 }
 ```
 

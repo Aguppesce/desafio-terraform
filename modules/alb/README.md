@@ -66,6 +66,7 @@ module "alb" {
   acm_certificate_arn = aws_acm_certificate.cert.arn
   alb_owner           = "magui"
 }
+```
 
 🔒 Seguridad
 

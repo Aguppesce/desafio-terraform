@@ -76,6 +76,7 @@ module "efs" {
     Application = "mysql-storage"
   }
 }
+```
 
 🔒 Seguridad
 

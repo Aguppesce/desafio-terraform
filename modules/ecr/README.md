@@ -55,6 +55,7 @@ module "ecr" {
     Owner       = "magui"
   }
 }
+```
 
 📝 Notas
 

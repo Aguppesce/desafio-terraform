@@ -31,13 +31,10 @@ Este módulo crea un **namespace privado** y un **servicio DNS interno** para EC
 
 ```hcl
 module "service_discovery" {
-  source = "./modules/service_discovery"
+  source = "./modules/service-discovery"
 
-  vpc_id = module.vpc.vpc_id
+  vpc_id = module.network.vpc_id
 }
 
-output "mysql_service_arn" {
-  value = module.service_discovery.mysql_service_arn
-}
 ```
 

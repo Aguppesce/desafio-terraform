@@ -53,13 +53,13 @@ Este módulo crea los **Security Groups (SG)** necesarios para un entorno ECS co
 
 ```hcl
 module "security_groups" {
-  source = "./modules/security_groups"
+  source = "./modules/security"
 
   name                 = "lab3"
-  vpc_id               = module.vpc.vpc_id
+  vpc_id               = module.network.vpc_id
   vpc_dns_resolver_cidr = "10.0.0.2/32"
   tags = {
-    Owner = "magui"
+    Owner = "lab3"
   }
 }
 ```

@@ -31,16 +31,20 @@ La contraseña se almacena como **SecureString**.
 ## 🔧 Ejemplo de uso
 
 ```hcl
-module "db_parameters" {
-  source                   = "./modules/ssm_db_parameters"
+module "ssm" {
+  source = "./modules/ssm"
 
-  name                     = "lab3-teracloud-dev"
-  db_parameter_path_prefix  = "/lab3/dev/db"
-  db_host                   = aws_rds_instance.mysql.endpoint
-  db_name                   = "myapp"
-  db_user                   = "appuser"
-  db_pass                   = var.db_password
-  tags                      = { Environment = "dev" }
+  name = "${var.project_name}-${var.environment}"
+
+  # prefijo por ambiente → /lab3/dev/db/... o /lab3/prod/db/...
+  db_parameter_path_prefix = "/lab3/${var.environment}/db"
+
+  db_host     = var.db_host
+  db_name     = var.db_name
+  db_user     = var.db_user
+  db_pass     = var.db_pass
+
+  tags = local.common_tags
 }
 ```
 
