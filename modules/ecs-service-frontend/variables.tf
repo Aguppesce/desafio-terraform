@@ -65,3 +65,14 @@ variable "db_pass_arn" {
   type        = string
   sensitive   = true
 }
+
+variable "aws_region" {
+  description = "Región de AWS (para logs)"
+  type        = string
+}
+
+variable "tags" {
+  description = "Tags comunes"
+  type        = map(string)
+  default     = {}
+}

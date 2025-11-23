@@ -162,6 +162,9 @@ module "ecs_service_frontend" {
   db_name_arn = module.ssm.db_parameters_arn.name
   db_user_arn = module.ssm.db_parameters_arn.user
   db_pass_arn = module.ssm.db_parameters_arn.password
+
+  aws_region = var.aws_region
+  tags       = local.common_tags
 }
 
 # 12) Service Discovery (Cloud Map)
@@ -185,6 +188,9 @@ module "ecs_service_mysql" {
 
   mysql_image         = module.ecr.mysql_repository_url
   service_registry_arn = module.service_discovery.mysql_service_arn
+
+  aws_region = var.aws_region
+  tags       = local.common_tags
 }
 
 # 14) Pipeline CI/CD
@@ -209,4 +215,15 @@ module "pipeline" {
 
   tags = local.common_tags
 }
+
+module "sns_notifications" {
+  source = "./modules/sns"
+
+  name_prefix         = "${var.project_name}-${var.environment}"
+  pipeline_name       = module.pipeline.pipeline_name
+  email_subscriptions = var.notification_emails
+
+  tags = local.common_tags
+}
+
 

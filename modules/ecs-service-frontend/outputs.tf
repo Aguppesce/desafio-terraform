@@ -8,5 +8,5 @@ output "frontend_task_definition_arn" {
 
 output "service_name" {
   description = "Nombre del servicio ECS"
-  value = aws_ecs_service.frontend_service.name
+  value       = aws_ecs_service.frontend_service.name
 }

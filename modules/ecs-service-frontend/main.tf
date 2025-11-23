@@ -1,3 +1,12 @@
+# modules/ecs-service-frontend/main.tf
+
+# Log group para el frontend
+resource "aws_cloudwatch_log_group" "frontend" {
+  name              = "/ecs/${var.name}-frontend"
+  retention_in_days = 7
+  tags              = var.tags
+}
+
 resource "aws_ecs_task_definition" "frontend_task" {
   family                   = "${var.name}-frontend-task"
   network_mode             = "awsvpc"
@@ -14,6 +23,7 @@ resource "aws_ecs_task_definition" "frontend_task" {
         {
           containerPort = 80
           hostPort      = 80
+          protocol      = "tcp"
         }
       ]
 
@@ -35,6 +45,15 @@ resource "aws_ecs_task_definition" "frontend_task" {
           valueFrom = var.db_pass_arn
         }
       ]
+
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = aws_cloudwatch_log_group.frontend.name
+          "awslogs-region"        = var.aws_region
+          "awslogs-stream-prefix" = "ecs"
+        }
+      }
     }
   ])
 

@@ -43,3 +43,14 @@ variable "service_registry_arn" {
   type        = string
   description = "ARN del servicio de Cloud Map para MySQL al que se registrará el servicio ECS (para service discovery)."
 }
+
+variable "aws_region" {
+  description = "Región de AWS (para logs)"
+  type        = string
+}
+
+variable "tags" {
+  description = "Tags comunes"
+  type        = map(string)
+  default     = {}
+}
