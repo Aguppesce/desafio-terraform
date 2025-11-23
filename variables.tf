@@ -99,3 +99,8 @@ variable "github_branch" {
   default     = "main"
 }
 
+variable "notification_emails" {
+  description = "Lista de emails para notificaciones SNS del pipeline"
+  type        = list(string)
+  default     = []
+}

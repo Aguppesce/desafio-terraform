@@ -1,4 +1,12 @@
 # modules/ecs-service-mysql/main.tf
+
+# Log group para MySQL
+resource "aws_cloudwatch_log_group" "mysql" {
+  name              = "/ecs/${var.name}-mysql"
+  retention_in_days = 7
+  tags              = var.tags
+}
+
 resource "aws_ecs_task_definition" "mysql_task" {
   family                   = "${var.name}-mysql-task"
   network_mode             = "awsvpc"
@@ -9,9 +17,9 @@ resource "aws_ecs_task_definition" "mysql_task" {
     name = "mysql-data"
 
     efs_volume_configuration {
-      file_system_id       = var.efs_id
-      transit_encryption   = "ENABLED"
-      root_directory       = "/"
+      file_system_id     = var.efs_id
+      transit_encryption = "ENABLED"
+      root_directory     = "/"
     }
   }
 
@@ -25,11 +33,12 @@ resource "aws_ecs_task_definition" "mysql_task" {
         {
           containerPort = 3306
           hostPort      = 3306
+          protocol      = "tcp"
         }
       ]
 
       environment = [
-        { name = "MYSQL_DATABASE",      value = "app_db"    },
+        { name = "MYSQL_DATABASE", value = "app_db" },
         { name = "MYSQL_ROOT_PASSWORD", value = "password" }
       ]
 
@@ -39,6 +48,15 @@ resource "aws_ecs_task_definition" "mysql_task" {
           sourceVolume  = "mysql-data"
         }
       ]
+
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = aws_cloudwatch_log_group.mysql.name
+          "awslogs-region"        = var.aws_region
+          "awslogs-stream-prefix" = "ecs"
+        }
+      }
     }
   ])
 
