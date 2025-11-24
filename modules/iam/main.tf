@@ -1,6 +1,15 @@
 # Data source para obtener el account ID
 data "aws_caller_identity" "current" {}
 
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+    }
+  }
+}
+
+
 ###############################
 # ECS INSTANCE ROLE + PROFILE
 ###############################

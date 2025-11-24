@@ -26,4 +26,9 @@ provider "aws" {
   }
 }
 
+provider "aws" {
+  alias  = "iam"
+  region = var.aws_region
+}
+
 data "aws_caller_identity" "current" {}
