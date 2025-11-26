@@ -11,5 +11,7 @@ data "aws_acm_certificate" "cert" {
 
 output "resolved_acm_certificate_arn" {
   description = "ARN resuelto a partir de la fuente de datos ACM (vacío si se proporciona variable)."
-  value       = var.acm_certificate_arn != "" ? var.acm_certificate_arn : (length(data.aws_acm_certificate.cert) > 0 ? data.aws_acm_certificate.cert[0].arn : "")
+  value = (
+    length(data.aws_acm_certificate.cert) > 0 ? data.aws_acm_certificate.cert[0].arn : (var.acm_certificate_arn != "" ? var.acm_certificate_arn : "")
+  )
 }
