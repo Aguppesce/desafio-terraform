@@ -14,6 +14,17 @@ locals {
 
   # AMI recomendada para ECS (Amazon Linux 2 optimizada)
   ecs_ami_id = data.aws_ssm_parameter.ecs_ami.value
+
+  # Calculated subnet CIDRs using cidrsubnet function
+  calculated_public_subnets = [
+    cidrsubnet(var.vpc_cidr, 8, 0),   # 10.0.0.0/24
+    cidrsubnet(var.vpc_cidr, 8, 16)   # 10.0.16.0/24
+  ]
+  
+  calculated_private_subnets = [
+    cidrsubnet(var.vpc_cidr, 8, 128), # 10.0.128.0/24
+    cidrsubnet(var.vpc_cidr, 8, 144)  # 10.0.144.0/24
+  ]
 }
 
 # AMI recomendada para ECS (Amazon Linux 2 optimizada)

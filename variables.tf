@@ -100,13 +100,3 @@ variable "availability_zones" {
   description = "Lista de zonas de disponibilidad"
   type        = list(string)
 }
-
-variable "public_subnet_cidrs" {
-  description = "CIDRs para subnets públicas"
-  type        = list(string)
-}
-
-variable "private_subnet_cidrs" {
-  description = "CIDRs para subnets privadas"
-  type        = list(string)
-}

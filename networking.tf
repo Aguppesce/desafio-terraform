@@ -5,8 +5,8 @@ module "network" {
   name                 = local.name_prefix
   vpc_cidr             = var.vpc_cidr
   azs                  = var.availability_zones
-  public_subnet_cidrs  = var.public_subnet_cidrs
-  private_subnet_cidrs = var.private_subnet_cidrs
+  public_subnet_cidrs  = local.calculated_public_subnets
+  private_subnet_cidrs = local.calculated_private_subnets
 
   tags = local.common_tags
 }
