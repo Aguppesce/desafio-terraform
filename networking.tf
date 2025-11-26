@@ -3,10 +3,10 @@ module "network" {
   source = "./modules/network"
 
   name                 = local.name_prefix
-  vpc_cidr             = "10.0.0.0/16"
-  azs                  = ["us-east-1a", "us-east-1b"]
-  public_subnet_cidrs  = ["10.0.0.0/24", "10.0.16.0/24"]
-  private_subnet_cidrs = ["10.0.128.0/24", "10.0.144.0/24"]
+  vpc_cidr             = var.vpc_cidr
+  azs                  = var.availability_zones
+  public_subnet_cidrs  = var.public_subnet_cidrs
+  private_subnet_cidrs = var.private_subnet_cidrs
 
   tags = local.common_tags
 }

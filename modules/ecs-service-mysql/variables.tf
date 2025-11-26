@@ -74,5 +74,4 @@ variable "tags" {
 variable "efs_access_point_id" {
   description = "ID del punto de acceso de EFS para la tarea MySQL."
   type        = string
-  
 }

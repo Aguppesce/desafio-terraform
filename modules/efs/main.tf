@@ -25,8 +25,18 @@ resource "aws_efs_mount_target" "main_az2" {
 resource "aws_efs_access_point" "mysql" {
   file_system_id = aws_efs_file_system.main.id
 
+  posix_user {
+    uid = 999
+    gid = 999
+  }
+
   root_directory {
     path = "/mysql-data"
+    creation_info {
+      owner_uid   = 999
+      owner_gid   = 999
+      permissions = "755"
+    }
   }
 
   tags = merge(var.tags, {
