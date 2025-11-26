@@ -1,5 +1,5 @@
 locals {
-  cert_domain = "lab3.${trim(var.hosted_zone_name_base, ".") }"
+  cert_domain = "*.${trim(var.hosted_zone_name_base, ".") }"
 }
 
 data "aws_acm_certificate" "cert" {
