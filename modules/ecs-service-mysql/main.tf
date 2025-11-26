@@ -12,6 +12,7 @@ resource "aws_ecs_task_definition" "mysql_task" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["EC2"]
   execution_role_arn       = var.ecs_task_execution_role_arn
+  task_role_arn            = var.ecs_task_role_arn
 
   volume {
     name = "mysql-data"
@@ -19,7 +20,13 @@ resource "aws_ecs_task_definition" "mysql_task" {
     efs_volume_configuration {
       file_system_id     = var.efs_id
       transit_encryption = "ENABLED"
-      root_directory     = "/"
+      
+      authorization_config {
+        access_point_id = var.efs_access_point_id
+        iam             = "ENABLED"
+      }
+
+      root_directory = "/"
     }
   }
 
@@ -27,6 +34,7 @@ resource "aws_ecs_task_definition" "mysql_task" {
     {
       name      = "mysql-db"
       image     = var.mysql_image
+      user      = "999:999"  # fuerza el mismo UID:GID del Access Point
       essential = true
 
       portMappings = [
@@ -37,9 +45,15 @@ resource "aws_ecs_task_definition" "mysql_task" {
         }
       ]
 
-      environment = [
-        { name = "MYSQL_DATABASE", value = "app_db" },
-        { name = "MYSQL_ROOT_PASSWORD", value = "password" }
+       secrets = [
+      {
+        name      = "MYSQL_ROOT_PASSWORD"
+        valueFrom = var.mysql_root_password
+      },
+      {
+        name      = "MYSQL_DATABASE"
+        valueFrom = var.mysql_database
+      }
       ]
 
       mountPoints = [

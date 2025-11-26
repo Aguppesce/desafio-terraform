@@ -37,8 +37,8 @@ EOF
 
 resource "aws_autoscaling_group" "ecs_asg" {
   name                = "${var.name}-asg"
-  max_size            = 3
-  min_size            = 2
+  max_size            = 5
+  min_size            = 3
   desired_capacity    = 3
   vpc_zone_identifier = var.private_subnets
   health_check_type   = "EC2"

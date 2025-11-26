@@ -26,15 +26,15 @@ resource "aws_efs_access_point" "mysql" {
   file_system_id = aws_efs_file_system.main.id
 
   posix_user {
-    gid = 1000
-    uid = 1000
+    uid = 999
+    gid = 999
   }
 
   root_directory {
     path = "/mysql-data"
     creation_info {
-      owner_gid   = 1000
-      owner_uid   = 1000
+      owner_uid   = 999
+      owner_gid   = 999
       permissions = "755"
     }
   }
